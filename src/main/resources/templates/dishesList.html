@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="utf-8">
+    <title>Add Dish to Chef</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        section {
+            float: left;
+            margin: 0 1.5%;
+            width: 63%;
+        }
+        aside {
+            float: right;
+            margin: 0 1.5%;
+            width: 30%;
+        }
+    </style>
 </head>
 <body>
-$END$
+    <header>
+        <h1>Select the Dish to add to the Chef</h1>
+    </header>
+    <section>
+        <div th:if="${errorMessage != null}">
+            <p th:text="${errorMessage}" style="color: red;"></p>
+        </div>
+        <h2>Select dish:</h2>
+        <form action="/chefDetails" method="POST">
+            <input type="hidden" name="chefId" th:value="${chefId}">
+            <div th:each="dish : ${dishes}">
+                <input type="radio" name="dishId" th:value="${dish.dishId}" th:id="${'dish_' + dish.dishId}">
+                <label th:for="${'dish_' + dish.dishId}" th:text="${dish.name}"></label>
+                <br/>
+            </div>
+            <br/>
+            <input type="submit" value="Add dish">
+        </form>
+    </section>
+    <aside>
+        <table>
+            <tr>
+                <td><b>Chef ID</b></td>
+                <td th:text="${chef.id}"></td>
+            </tr>
+            <tr>
+                <td><b>Chef Name</b></td>
+                <td th:text="${chef.firstName + ' ' + chef.lastName}"></td>
+            </tr>
+        </table>
+    </aside>
 </body>
 </html>

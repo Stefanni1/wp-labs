@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Chef Details</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 5px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Chef: <span th:text="${chef.firstName + ' ' + chef.lastName}"></span></h1>
+    </header>
+    <section>
+        <h2>Bio: <span th:text="${chef.bio}"></span></h2>
+        <h2>Dishes prepared by this chef:</h2>
+        <ul th:if="${chef.dishes != null and !chef.dishes.isEmpty()}">
+            <li th:each="dish : ${chef.dishes}">
+                <span th:text="${dish.name + ' (' + dish.cuisine + ', ' + dish.preparationTime + ' min)'}"></span>
+            </li>
+        </ul>
+        <ul th:if="${chef.dishes == null or chef.dishes.isEmpty()}">
+            <li>No dishes assigned yet.</li>
+        </ul>
+    </section>
+</body>
+</html>
+
