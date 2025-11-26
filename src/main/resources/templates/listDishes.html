@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Dishes List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .dish-option {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .actions {
+            display: inline-block;
+            margin-left: 20px;
+        }
+        .btn {
+            padding: 5px 10px;
+            margin: 2px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 3px;
+        }
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, td, th {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Restaurant Dishes App</h1>
+    <a th:href="@{/dishes/add-form}" class="btn btn-primary">+ Add New Dish</a>
+</header>
+<main>
+    <div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+    
+    <form th:action="@{/dishes}" method="POST">
+        <h2>Choose a dish:</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dish ID</th>
+                    <th>Name</th>
+                    <th>Cuisine</th>
+                    <th>Preparation Time (min)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="dish : ${dishes}" class="dish-option">
+                    <td th:text="${dish.id}"></td>
+                    <td th:text="${dish.dishId}"></td>
+                    <td th:text="${dish.name}"></td>
+                    <td th:text="${dish.cuisine}"></td>
+                    <td th:text="${dish.preparationTime}"></td>
+                    <td>
+                        <div class="actions">
+                            <a th:href="@{'/dishes/edit-form/' + ${dish.id}}" class="btn btn-primary">Edit</a>
+                            <button type="submit"
+                                    th:formaction="@{'/dishes/delete/' + ${dish.id}}"
+                                    formmethod="post"
+                                    class="delete-btn">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${dishes == null or dishes.isEmpty()}">
+                    <td colspan="6" style="text-align: center;">No dishes available. Click "Add New Dish" to create one.</td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+</main>
+</body>
+</html>
