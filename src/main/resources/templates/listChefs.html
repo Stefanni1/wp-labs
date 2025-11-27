@@ -2,41 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Restaurant Chefs - Welcome to Our Restaurant</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #333;
-        }
-    </style>
+    <title>All Chefs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-<header>
-    <h1>Welcome to Our Restaurant</h1>
-</header>
-<main>
-    <div th:if="${errorMessage != null}">
-        <p th:text="${errorMessage}" style="color: red;"></p>
-    </div>
-    <h2>Choose a chef:</h2>
-    <form action="/dish" method="POST">
-        <div th:each="chef : ${chefs}">
-            <input type="radio" name="chefId" th:value="${chef.id}" th:id="${'chef_' + chef.id}">
-            <label th:for="${'chef_' + chef.id}">
-                Name: <span th:text="${chef.firstName + ' ' + chef.lastName}"></span>,
-                Bio: <span th:text="${chef.bio}"></span>
-            </label>
-            <br/>
-            <a th:href="@{/addReview?chefId={chefId}(chefId=${chef.id})}" class="btn btn-primary">Add Review</a>
-            <br/>
-        </div>
-        <input type="submit" value="Submit">
-    </form>
+<body class="bg-light">
 
-</main>
+<div class="container mt-5">
+
+    <h1 class="mb-4">All Chefs</h1>
+
+    <!-- SO OVA DODAVAME NOV SHEF -->
+    <a th:href="@{/chefs/add}" class="btn btn-primary mb-4">+ Add new chef</a>
+
+    <!-- AKO IMA GRESKA SO DA ISPECATE -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <!-- TUKA NI JA DAVA CELA LISTA NA CHEFS -->
+    <div th:each="chef : ${chefs}" class="border p-3 mb-3 bg-white rounded">
+        <h4 th:text="${chef.firstName + ' ' + chef.lastName}"></h4>
+        <p><strong>Gender:</strong> <span th:text="${chef.gender}"></span></p>
+        <p><strong>Bio:</strong> <span th:text="${chef.bio}"></span></p>
+
+        <!-- TUKA IMAM KOCPCINJA EDIT I DELETE -->
+        <div class="mt-2">
+            <a th:href="@{'/chefs/edit/' + ${chef.id}}" class="btn btn-sm btn-warning">Edit</a>
+
+            <form th:action="@{'/chefs/delete/' + ${chef.id}}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Delete this chef?')">Delete</button>
+            </form>
+
+<!--            <a th:href="@{'/addReview?chefId=' + ${chef.id}}" class="btn btn-sm btn-outline-secondary ms-2">-->
+<!--                Add Review-->
+<!--            </a>-->
+        </div>
+    </div>
+
+    <!-- AKO NEMA SHEFOVI -->
+    <div th:if="${chefs == null or chefs.isEmpty()}" class="alert alert-info">
+        No chefs yet. <a th:href="@{/chefs/add}"></a>!
+    </div>
+
+</div>
+
 </body>
 </html>
