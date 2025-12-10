@@ -14,7 +14,6 @@ import org.thymeleaf.web.IWebExchange;
 
 import java.io.IOException;
 
-@WebServlet(name = "AddReview", urlPatterns = "/addReview")
 public class AddReviewServlet extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;

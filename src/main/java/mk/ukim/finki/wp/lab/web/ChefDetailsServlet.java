@@ -15,7 +15,6 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet(name = "ChefDetailsServlet", urlPatterns = "/chefDetails")
 public class ChefDetailsServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final ChefService chefService;
@@ -25,6 +24,41 @@ public class ChefDetailsServlet extends HttpServlet {
         this.springTemplateEngine = springTemplateEngine;
         this.chefService = chefService;
         this.dishService = dishService;
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String chefIdStr = req.getParameter("chefId");
+
+        if (chefIdStr == null || chefIdStr.isEmpty()) {
+            resp.sendRedirect("/listChefs?errorMessage=Chef ID is missing");
+            return;
+        }
+
+        Long chefId;
+        try {
+            chefId = Long.parseLong(chefIdStr);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("/listChefs?errorMessage=Invalid chef ID");
+            return;
+        }
+
+        Chef chef = chefService.findById(chefId);
+        if (chef == null) {
+            resp.sendRedirect("/listChefs?errorMessage=Chef not found");
+            return;
+        }
+
+        IWebExchange webExchange = JakartaServletWebApplication
+                .buildApplication(getServletContext())
+                .buildExchange(req, resp);
+
+        WebContext context = new WebContext(webExchange);
+        context.setVariable("ipAddress", req.getRemoteAddr());
+        context.setVariable("userAgent", req.getHeader("user-agent"));
+        context.setVariable("chef", chef);
+
+        springTemplateEngine.process("chefDetails.html", context, resp.getWriter());
     }
 
     @Override

@@ -90,6 +90,7 @@
                     <th>Name</th>
                     <th>Cuisine</th>
                     <th>Preparation Time (min)</th>
+                    <th>Chef</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -100,6 +101,7 @@
                     <td th:text="${dish.name}"></td>
                     <td th:text="${dish.cuisine}"></td>
                     <td th:text="${dish.preparationTime}"></td>
+                    <td th:text="${dish.chef != null ? (dish.chef.firstName + ' ' + dish.chef.lastName) : 'N/A'}"></td>
                     <td>
                         <div class="actions">
                             <a th:href="@{'/dishes/edit-form/' + ${dish.id}}" class="btn btn-primary">Edit</a>
@@ -113,7 +115,7 @@
                     </td>
                 </tr>
                 <tr th:if="${dishes == null or dishes.isEmpty()}">
-                    <td colspan="6" style="text-align: center;">No dishes available. Click "Add New Dish" to create one.</td>
+                    <td colspan="7" style="text-align: center;">No dishes available. Click "Add New Dish" to create one.</td>
                 </tr>
             </tbody>
         </table>

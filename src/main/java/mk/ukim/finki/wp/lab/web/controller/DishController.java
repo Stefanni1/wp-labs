@@ -31,6 +31,7 @@ public class DishController {
     @GetMapping("/add-form")
     public String addDishPage(Model model) {
         model.addAttribute("dish", new Dish());
+        model.addAttribute("chefs", this.chefService.listChefs());
         return "dish-form";
     }
 
@@ -38,14 +39,20 @@ public class DishController {
     public String saveDish(@RequestParam String dishId,
                            @RequestParam String name,
                            @RequestParam String cuisine,
-                           @RequestParam int preparationTime) {
-        this.dishService.create(dishId, name, cuisine, preparationTime);
+                           @RequestParam int preparationTime,
+                           @RequestParam(required = false) Long chefId) {
+        this.dishService.create(dishId, name, cuisine, preparationTime, chefId);
         return "redirect:/dishes";
     }
 
     @GetMapping("/edit-form/{id}")
     public String editDishPage(@PathVariable Long id, Model model) {
-        model.addAttribute("dish", dishService.findById(id));
+        Dish dish = dishService.findById(id);
+        if (dish == null) {
+            return "redirect:/dishes?error=DishNotFound";
+        }
+        model.addAttribute("dish", dish);
+        model.addAttribute("chefs", this.chefService.listChefs());
         return "dish-form";
     }
 
@@ -54,9 +61,10 @@ public class DishController {
                              @RequestParam String dishId,
                              @RequestParam String name,
                              @RequestParam String cuisine,
-                             @RequestParam int preparationTime) {
+                             @RequestParam int preparationTime,
+                             @RequestParam(required = false) Long chefId) {
         try {
-            this.dishService.update(id, dishId, name, cuisine, preparationTime);
+            this.dishService.update(id, dishId, name, cuisine, preparationTime, chefId);
             return "redirect:/dishes";
         } catch (IllegalArgumentException ex) {
             return "redirect:/dishes?error=DishNotFound";
@@ -72,6 +80,7 @@ public class DishController {
     @GetMapping("/dish-form")
     public String getAddDishPage(Model model) {
         model.addAttribute("dish", new Dish());
+        model.addAttribute("chefs", this.chefService.listChefs());
         return "dish-form";
     }
 
@@ -82,6 +91,7 @@ public class DishController {
             return "redirect:/dishes?error=DishNotFound";
         }
         model.addAttribute("dish", dish);
+        model.addAttribute("chefs", this.chefService.listChefs());
         return "dish-form";
     }
 }

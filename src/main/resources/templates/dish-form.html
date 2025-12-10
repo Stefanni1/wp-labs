@@ -68,6 +68,17 @@
                                required
                                placeholder="Enter preparation time">
                     </div>
+                    <div class="form-group">
+                        <label for="chefId">Chef</label>
+                        <select class="form-control" id="chefId" name="chefId">
+                            <option value="">-- Select Chef (Optional) --</option>
+                            <option th:each="chef : ${chefs}"
+                                    th:value="${chef.id}"
+                                    th:text="${chef.firstName + ' ' + chef.lastName}"
+                                    th:selected="${dish != null && dish.chef != null && dish.chef.id == chef.id}">
+                            </option>
+                        </select>
+                    </div>
                     <button id="submit" type="submit" class="btn btn-primary">Submit</button>
                     <a type="button" class="btn btn-secondary" href="/dishes">Back</a>
                 </form>

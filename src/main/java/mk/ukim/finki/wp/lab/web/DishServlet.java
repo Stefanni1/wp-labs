@@ -15,7 +15,6 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet(name = "DishServlet", urlPatterns = "/dish")
 public class DishServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final ChefService chefService;
