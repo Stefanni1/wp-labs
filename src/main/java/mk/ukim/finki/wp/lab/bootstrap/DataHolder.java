@@ -40,22 +40,22 @@ public class DataHolder {
             dishes = new ArrayList<>();
             List<Chef> savedChefs = chefRepository.findAll();
             if (!savedChefs.isEmpty()) {
-                dishes.add(new Dish("dish1", "Pasta Carbonara", "Italian", 30));
+                dishes.add(new Dish("dish1", "Pasta Carbonara", "Italian", 30, 5));
                 dishes.get(0).setChef(savedChefs.get(0));
-                dishes.add(new Dish("dish2", "Beef Wellington", "British", 45));
+                dishes.add(new Dish("dish2", "Beef Wellington", "British", 45, 5));
                 dishes.get(1).setChef(savedChefs.get(1));
-                dishes.add(new Dish("dish3", "Chicken Tikka Masala", "Indian", 35));
+                dishes.add(new Dish("dish3", "Chicken Tikka Masala", "Indian", 35, 4));
                 dishes.get(2).setChef(savedChefs.get(2));
-                dishes.add(new Dish("dish4", "Sushi Platter", "Japanese", 40));
+                dishes.add(new Dish("dish4", "Sushi Platter", "Japanese", 40, 5));
                 dishes.get(3).setChef(savedChefs.get(3));
-                dishes.add(new Dish("dish5", "Beef Bourguignon", "French", 60));
+                dishes.add(new Dish("dish5", "Beef Bourguignon", "French", 60, 4));
                 dishes.get(4).setChef(savedChefs.get(4));
             } else {
-                dishes.add(new Dish("dish1", "Pasta Carbonara", "Italian", 30));
-                dishes.add(new Dish("dish2", "Beef Wellington", "British", 45));
-                dishes.add(new Dish("dish3", "Chicken Tikka Masala", "Indian", 35));
-                dishes.add(new Dish("dish4", "Sushi Platter", "Japanese", 40));
-                dishes.add(new Dish("dish5", "Beef Bourguignon", "French", 60));
+                dishes.add(new Dish("dish1", "Pasta Carbonara", "Italian", 30, 5));
+                dishes.add(new Dish("dish2", "Beef Wellington", "British", 45, 5));
+                dishes.add(new Dish("dish3", "Chicken Tikka Masala", "Indian", 35, 4));
+                dishes.add(new Dish("dish4", "Sushi Platter", "Japanese", 40, 5));
+                dishes.add(new Dish("dish5", "Beef Bourguignon", "French", 60, 4));
             }
             dishRepository.saveAll(dishes);
         }

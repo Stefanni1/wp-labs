@@ -40,7 +40,7 @@ public class ChefServiceImpl implements ChefService {
         Dish dish = dishService.findByDishId(dishId);
         if (dish == null) throw new IllegalArgumentException("Dish not found");
         dish.setChef(chef);
-        dishService.update(dish.getId(), dish.getDishId(), dish.getName(), dish.getCuisine(), dish.getPreparationTime(), chefId);
+        dishService.update(dish.getId(), dish.getDishId(), dish.getName(), dish.getCuisine(), dish.getPreparationTime(), dish.getRating(), chefId);
         return chefRepository.findById(chefId).orElseThrow();
     }
 

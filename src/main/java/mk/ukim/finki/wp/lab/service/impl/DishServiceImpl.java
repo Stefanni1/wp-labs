@@ -26,6 +26,14 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
+    public List<Dish> listDishes(Integer minRating) {
+        if (minRating == null) {
+            return dishRepository.findAll();
+        }
+        return dishRepository.findAllByRatingGreaterThanEqual(minRating);
+    }
+
+    @Override
     public Dish findByDishId(String dishId) {
         return this.dishRepository.findByDishId(dishId);
     }
@@ -36,14 +44,14 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public Dish create(String dishId, String name, String cuisine, int preparationTime) {
-        Dish dish = new Dish(dishId, name, cuisine, preparationTime);
+    public Dish create(String dishId, String name, String cuisine, int preparationTime, int rating) {
+        Dish dish = new Dish(dishId, name, cuisine, preparationTime, rating);
         return this.dishRepository.save(dish);
     }
 
     @Override
-    public Dish create(String dishId, String name, String cuisine, int preparationTime, Long chefId) {
-        Dish dish = new Dish(dishId, name, cuisine, preparationTime);
+    public Dish create(String dishId, String name, String cuisine, int preparationTime, int rating, Long chefId) {
+        Dish dish = new Dish(dishId, name, cuisine, preparationTime, rating);
         if (chefId != null) {
             Optional<Chef> chef = chefRepository.findById(chefId);
             chef.ifPresent(dish::setChef);
@@ -52,7 +60,7 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public Dish update(Long id, String dishId, String name, String cuisine, int preparationTime) {
+    public Dish update(Long id, String dishId, String name, String cuisine, int preparationTime, int rating) {
         Optional<Dish> existing = this.dishRepository.findById(id);
         if (existing.isEmpty()) {
             throw new IllegalArgumentException("Dish not found");
@@ -62,11 +70,12 @@ public class DishServiceImpl implements DishService {
         dish.setName(name);
         dish.setCuisine(cuisine);
         dish.setPreparationTime(preparationTime);
+        dish.setRating(rating);
         return this.dishRepository.save(dish);
     }
 
     @Override
-    public Dish update(Long id, String dishId, String name, String cuisine, int preparationTime, Long chefId) {
+    public Dish update(Long id, String dishId, String name, String cuisine, int preparationTime, int rating, Long chefId) {
         Optional<Dish> existing = this.dishRepository.findById(id);
         if (existing.isEmpty()) {
             throw new IllegalArgumentException("Dish not found");
@@ -76,6 +85,7 @@ public class DishServiceImpl implements DishService {
         dish.setName(name);
         dish.setCuisine(cuisine);
         dish.setPreparationTime(preparationTime);
+        dish.setRating(rating);
         if (chefId != null) {
             Optional<Chef> chef = chefRepository.findById(chefId);
             chef.ifPresent(dish::setChef);

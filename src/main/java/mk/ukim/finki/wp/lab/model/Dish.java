@@ -24,21 +24,26 @@ public class Dish {
     @Column(name = "preparation_time")
     private int preparationTime;
 
+    @Column(name = "rating")
+    private int rating;
+
     @ManyToOne
     private Chef chef;
 
-    public Dish(String dishId, String name, String cuisine, int preparationTime) {
+    public Dish(String dishId, String name, String cuisine, int preparationTime, int rating) {
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
         this.preparationTime = preparationTime;
+        this.rating = rating;
     }
 
-    public Dish(Long id, String dishId, String name, String cuisine, int preparationTime) {
+    public Dish(Long id, String dishId, String name, String cuisine, int preparationTime, int rating) {
         this.id = id;
         this.dishId = dishId;
         this.name = name;
         this.cuisine = cuisine;
         this.preparationTime = preparationTime;
+        this.rating = rating;
     }
 }

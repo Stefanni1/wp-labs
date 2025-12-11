@@ -76,6 +76,17 @@
 <header>
     <h1>Welcome to our Restaurant Dishes App</h1>
     <a th:href="@{/dishes/add-form}" class="btn btn-primary">+ Add New Dish</a>
+    <form th:action="@{/dishes}" method="get" class="form-inline" style="margin-top:10px;">
+        <label for="ratingFilter">Filter by rating (min):</label>
+        <select id="ratingFilter" name="rating" class="form-control" style="width:auto; display:inline-block; margin-left:8px;">
+            <option value="" th:selected="${rating == null}">All</option>
+            <option th:each="r : ${#numbers.sequence(1,5)}"
+                    th:value="${r}"
+                    th:selected="${rating != null and rating == r}"
+                    th:text="${r}"></option>
+        </select>
+        <button type="submit" class="btn btn-secondary" style="margin-left:8px;">Apply</button>
+    </form>
 </header>
 <main>
     <div th:if="${error != null}" class="alert alert-danger" role="alert" th:text="${error}"></div>
@@ -90,6 +101,7 @@
                     <th>Name</th>
                     <th>Cuisine</th>
                     <th>Preparation Time (min)</th>
+                    <th>Rating</th>
                     <th>Chef</th>
                     <th>Actions</th>
                 </tr>
@@ -101,6 +113,7 @@
                     <td th:text="${dish.name}"></td>
                     <td th:text="${dish.cuisine}"></td>
                     <td th:text="${dish.preparationTime}"></td>
+                    <td th:text="${dish.rating}"></td>
                     <td th:text="${dish.chef != null ? (dish.chef.firstName + ' ' + dish.chef.lastName) : 'N/A'}"></td>
                     <td>
                         <div class="actions">
@@ -115,7 +128,7 @@
                     </td>
                 </tr>
                 <tr th:if="${dishes == null or dishes.isEmpty()}">
-                    <td colspan="7" style="text-align: center;">No dishes available. Click "Add New Dish" to create one.</td>
+                    <td colspan="8" style="text-align: center;">No dishes available. Click "Add New Dish" to create one.</td>
                 </tr>
             </tbody>
         </table>

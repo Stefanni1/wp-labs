@@ -10,4 +10,5 @@ import java.util.List;
 public interface DishRepository extends JpaRepository<Dish, Long> {
     Dish findByDishId(String dishId);
     List<Dish> findAllByChef_Id(Long chefId);
+    List<Dish> findAllByRatingGreaterThanEqual(int rating);
 }

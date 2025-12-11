@@ -20,11 +20,14 @@ public class DishController {
     }
 
     @GetMapping
-    public String getDishesPage(@RequestParam(required = false) String error, Model model) {
+    public String getDishesPage(@RequestParam(required = false) String error,
+                                @RequestParam(required = false) Integer rating,
+                                Model model) {
         if (error != null) {
             model.addAttribute("error", error);
         }
-        model.addAttribute("dishes", this.dishService.listDishes());
+        model.addAttribute("dishes", this.dishService.listDishes(rating));
+        model.addAttribute("rating", rating);
         return "listDishes";
     }
 
@@ -40,8 +43,9 @@ public class DishController {
                            @RequestParam String name,
                            @RequestParam String cuisine,
                            @RequestParam int preparationTime,
+                           @RequestParam int rating,
                            @RequestParam(required = false) Long chefId) {
-        this.dishService.create(dishId, name, cuisine, preparationTime, chefId);
+        this.dishService.create(dishId, name, cuisine, preparationTime, rating, chefId);
         return "redirect:/dishes";
     }
 
@@ -62,9 +66,10 @@ public class DishController {
                              @RequestParam String name,
                              @RequestParam String cuisine,
                              @RequestParam int preparationTime,
+                             @RequestParam int rating,
                              @RequestParam(required = false) Long chefId) {
         try {
-            this.dishService.update(id, dishId, name, cuisine, preparationTime, chefId);
+            this.dishService.update(id, dishId, name, cuisine, preparationTime, rating, chefId);
             return "redirect:/dishes";
         } catch (IllegalArgumentException ex) {
             return "redirect:/dishes?error=DishNotFound";
