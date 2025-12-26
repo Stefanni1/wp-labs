@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <title>Dishes List</title>
@@ -75,7 +75,20 @@
 <body>
 <header>
     <h1>Welcome to our Restaurant Dishes App</h1>
-    <a th:href="@{/dishes/add-form}" class="btn btn-primary">+ Add New Dish</a>
+    <div style="margin-bottom: 10px;">
+        <span sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}" class="btn btn-success">Login</a>
+        </span>
+        <span sec:authorize="isAuthenticated()">
+            <span>Welcome, <span sec:authentication="name"></span>!</span>
+            <form th:action="@{/logout}" method="post" style="display: inline-block; margin-left: 10px;">
+                <button type="submit" class="btn btn-secondary">Logout</button>
+            </form>
+        </span>
+    </div>
+    <div sec:authorize="isAuthenticated()">
+        <a th:href="@{/dishes/add-form}" class="btn btn-primary">+ Add New Dish</a>
+    </div>
     <form th:action="@{/dishes}" method="get" class="form-inline" style="margin-top:10px;">
         <label for="ratingFilter">Filter by rating (min):</label>
         <select id="ratingFilter" name="rating" class="form-control" style="width:auto; display:inline-block; margin-left:8px;">
@@ -116,7 +129,7 @@
                     <td th:text="${dish.rating}"></td>
                     <td th:text="${dish.chef != null ? (dish.chef.firstName + ' ' + dish.chef.lastName) : 'N/A'}"></td>
                     <td>
-                        <div class="actions">
+                        <div class="actions" sec:authorize="isAuthenticated()">
                             <a th:href="@{'/dishes/edit-form/' + ${dish.id}}" class="btn btn-primary">Edit</a>
                             <button type="submit"
                                     th:formaction="@{'/dishes/delete/' + ${dish.id}}"
@@ -124,6 +137,9 @@
                                     class="delete-btn">
                                 Delete
                             </button>
+                        </div>
+                        <div sec:authorize="!isAuthenticated()">
+                            <span style="color: #999;">Login to edit/delete</span>
                         </div>
                     </td>
                 </tr>

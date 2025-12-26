@@ -4,8 +4,12 @@ import jakarta.annotation.PostConstruct;
 import mk.ukim.finki.wp.lab.model.Chef;
 import mk.ukim.finki.wp.lab.model.Dish;
 import mk.ukim.finki.wp.lab.model.Gender;
+import mk.ukim.finki.wp.lab.model.User;
+import mk.ukim.finki.wp.lab.model.enums.Role;
 import mk.ukim.finki.wp.lab.repository.ChefRepository;
 import mk.ukim.finki.wp.lab.repository.DishRepository;
+import mk.ukim.finki.wp.lab.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,13 +19,21 @@ import java.util.List;
 public class DataHolder {
     public static List<Chef> chefs = null;
     public static List<Dish> dishes = null;
+    public static List<User> users = null;
 
     private final ChefRepository chefRepository;
     private final DishRepository dishRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataHolder(ChefRepository chefRepository, DishRepository dishRepository) {
+    public DataHolder(ChefRepository chefRepository, 
+                     DishRepository dishRepository,
+                     UserRepository userRepository,
+                     PasswordEncoder passwordEncoder) {
         this.chefRepository = chefRepository;
         this.dishRepository = dishRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -58,6 +70,35 @@ public class DataHolder {
                 dishes.add(new Dish("dish5", "Beef Bourguignon", "French", 60, 4));
             }
             dishRepository.saveAll(dishes);
+        }
+
+        if (userRepository.findAll().isEmpty()) {
+            users = new ArrayList<>();
+            users.add(new User(
+                    "elena.atanasoska",
+                    passwordEncoder.encode("ea"),
+                    "Elena",
+                    "Atanasoska",
+                    Role.ROLE_USER));
+            users.add(new User(
+                    "darko.sasanski",
+                    passwordEncoder.encode("ds"),
+                    "Darko",
+                    "Sasanski",
+                    Role.ROLE_USER));
+            users.add(new User(
+                    "ana.todorovska",
+                    passwordEncoder.encode("at"),
+                    "Ana",
+                    "Todorovska",
+                    Role.ROLE_USER));
+            users.add(new User(
+                    "admin",
+                    passwordEncoder.encode("admin"),
+                    "admin",
+                    "admin",
+                    Role.ROLE_ADMIN));
+            userRepository.saveAll(users);
         }
     }
 }

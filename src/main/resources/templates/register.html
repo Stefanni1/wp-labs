@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Register</h3>
+                </div>
+                <div class="card-body">
+                    <th:block th:if="${error != null}">
+                        <div th:text="${error}" class="alert alert-danger" role="alert"></div>
+                    </th:block>
+                    <form th:action="@{/register}" method="post">
+                        <div class="form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="surname">Surname:</label>
+                            <input type="text" class="form-control" id="surname" name="surname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="repeatPassword">Repeat Password:</label>
+                            <input type="password" class="form-control" id="repeatPassword" name="repeatPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Role:</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="role" type="radio" id="ROLE_USER" value="ROLE_USER" checked>
+                                <label class="form-check-label" for="ROLE_USER">ROLE_USER</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" name="role" type="radio" id="ROLE_ADMIN" value="ROLE_ADMIN">
+                                <label class="form-check-label" for="ROLE_ADMIN">ROLE_ADMIN</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </form>
+                    <div class="mt-3 text-center">
+                        <a th:href="@{/login}" class="btn btn-link">Already have an account? Login</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+
+
